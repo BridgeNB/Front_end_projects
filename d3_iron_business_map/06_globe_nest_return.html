@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="http://d3js.org/d3.v3.min.js"></script>
+  <script src="https://d3js.org/topojson.v2.min.js"></script>
+    <style>
+    </style>
+    <script type="text/javascript">  
+      function draw(geo_data) {
+        "use strict";
+        // Define canvas size
+        var margin = 75,
+            width = 1400 - margin,
+            height = 600 - margin;
+
+        // Draw the canvas map
+        var svg = d3.select("body")
+            .append("svg")
+            .attr("width", width + margin)
+            .attr("height", height + margin)
+            .append('g')
+            .attr('class', 'map');
+
+        // Draw mercator
+        var projection = d3.geo.mercator()
+                               .scale(140)
+                               .translate([width / 2, height / 1.2]);
+        // Define path                       
+        var path = d3.geo.path().projection(projection);
+        // Draw map with lightblue fill and black stock
+        var map = svg.selectAll('path')
+                     .data(geo_data.features)
+                     .enter()
+                     .append('path')
+                     .attr('d', path)
+                     .style('fill', 'lightBlue')
+                     .style('stroke', 'black')
+                     .style('stroke-width', 0.5);
+
+      };
+      </script>
+  </head>
+<body>
+  <script type="text/javascript">
+  /*
+    Use D3 to load the GeoJSON file
+    */
+    
+// d3.json("world_countries.json", draw);
+d3.json("https://d3js.org/us-10m.v1.json", draw)
+  </script>
+</body>
+</html>
